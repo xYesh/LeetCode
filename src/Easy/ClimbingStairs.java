@@ -2,7 +2,7 @@ package Easy;
 
 import java.util.HashMap;
 
-public class ClimbingStairs {
+public class ClimbingStairs  {
 
     /**
      *  basic top down approach.
