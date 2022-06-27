@@ -8,7 +8,7 @@ public class ClimbingStairs  {
      *  basic top down approach.
      *  base condition is i == n return 1;
      *  without memoization lots of cases will be repeated across recursions.
-     *  time complexity ??
+     *  time complexity o(2^n) https://stackoverflow.com/a/13467808/12415069
      *
      */
     private class  Solution1 {
