@@ -13,15 +13,11 @@ class Solution {
     TreeNode sol = null;
     
     public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
-
         if (root == null) {
             return root;
         }        
-        
         helper(root,p);    
-        
         return sol;
-        
     }
     
     private void helper(TreeNode root, TreeNode p) {
@@ -29,11 +25,9 @@ class Solution {
         if (root == null || sol!= null) {
             return;
         }
-        
 
-        
         helper(root.left,p);
-                
+
         if (foundChar) {
            sol = root;
             foundChar = false;
