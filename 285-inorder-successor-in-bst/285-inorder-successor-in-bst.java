@@ -7,38 +7,58 @@
  *     TreeNode(int x) { val = x; }
  * }
  */
+// class Solution {
+    
+//     boolean foundChar = false;
+//     TreeNode sol = null;
+    
+//     public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
+//         if (root == null) {
+//             return root;
+//         }        
+//         helper(root,p);    
+//         return sol;
+//     }
+    
+//     private void helper(TreeNode root, TreeNode p) {
+        
+//         if (root == null || sol!= null) {
+//             return;
+//         }
+
+//         helper(root.left,p);
+
+//         if (foundChar) {
+//            sol = root;
+//             foundChar = false;
+//            return;
+//         }
+        
+//         if (root == p) {
+//             foundChar = true;
+//         }
+        
+//         helper(root.right,p);        
+//         return;
+//     }
+// }
+
 class Solution {
     
-    boolean foundChar = false;
-    TreeNode sol = null;
-    
     public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
-        if (root == null) {
-            return root;
-        }        
-        helper(root,p);    
-        return sol;
-    }
-    
-    private void helper(TreeNode root, TreeNode p) {
         
-        if (root == null || sol!= null) {
-            return;
-        }
-
-        helper(root.left,p);
-
-        if (foundChar) {
-           sol = root;
-            foundChar = false;
-           return;
+        TreeNode successor = null;
+        
+        while (root != null) {
+            
+            if (p.val >= root.val) {
+                root = root.right;
+            } else {
+                successor = root;
+                root = root.left;
+            }
         }
         
-        if (root == p) {
-            foundChar = true;
-        }
-        
-        helper(root.right,p);        
-        return;
+        return successor;
     }
 }
