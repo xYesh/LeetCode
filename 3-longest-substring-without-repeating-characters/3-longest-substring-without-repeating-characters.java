@@ -13,26 +13,15 @@ class Solution {
         
         for (int i=0; i<s.length(); i++) {
             char ch = s.charAt(i);
-            map.put(ch,map.getOrDefault(ch,0) + 1);
-            
-            if (map.get(ch) > 1) {
-                
-                while (map.get(ch) > 1) {
-                    char temp = s.charAt(start);
-                    map.put(temp,map.getOrDefault(temp,1)-1);
-                    // System.out.println("here " + temp + " " + map);
-                    start++;
-                }
+            if (map.containsKey(ch)) {
+                max = Math.max(max, i - start);
+                start = Math.max(start,map.get(ch) + 1);
             } else {
                 max = Math.max(max, i - start);
             }
-            
+            map.put(ch,i);
             max = Math.max(max, i + 1 - start);
-            // System.out.println(start + " " + map + " " + max + " ");
-        }
-        
-        // System.out.println(start);
-        
+        }        
         return max;
     }
 }
