@@ -8,20 +8,30 @@
  *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
-class Solution {
+
+    class Solution {
     public ListNode swapPairs(ListNode head) {
         
-        if (head == null || head.next == null) {
-            return head;
+        ListNode fake = new ListNode(0);
+        fake.next = head;
+        ListNode prev = fake;
+        
+        while (head != null && head.next != null) {
+            
+            ListNode f = head;
+            ListNode s = head.next;
+            
+            prev.next = s;
+            f.next = s.next;
+            s.next = f;
+            
+            head = f.next;
+            prev = f;
+            
+            
         }
         
-        ListNode f = head;
-        ListNode s = head.next;
-        
-        f.next = swapPairs(s.next);
-        s.next = f;
-        
-        return s;
+        return fake.next;
         
     }
 }
