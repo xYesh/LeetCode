@@ -14,32 +14,57 @@
  * }
  */
 class Solution {
-    
-    List<List<Integer>> sol = new ArrayList<>();
-    
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
-        helper(root, 0, true);
-        return sol;
-    }
-    
-    private void helper(TreeNode root, int level, boolean leftToRight) {
+        
+        List<List<Integer>> sol = new ArrayList();
+        
         if (root == null) {
-            return;
+            return sol;
         }
         
-        if (sol.size() == level) {
-            sol.add(new ArrayList());
-            sol.get(level).add(root.val);
-        } else {
-            if (leftToRight) {
-                sol.get(level).add(root.val);
+        LinkedList<TreeNode> bfs = new LinkedList();
+        bfs.addLast(root);
+        bfs.addLast(null);
+        LinkedList<Integer> currsol = new LinkedList();
+        boolean is_order_left = true;
+        
+        while (bfs.size() > 0) {
+            TreeNode curr = bfs.pollFirst();
+            
+            if (curr != null) {
+                
+                if (is_order_left) {
+                    currsol.addLast(curr.val);
+                } else {
+                    currsol.addFirst(curr.val);
+                }
+                
+                if (curr.left != null) {
+                    bfs.addLast(curr.left);
+                }
+                
+                if (curr.right!= null) {
+                    bfs.addLast(curr.right);
+                }
+                
             } else {
-                sol.get(level).add(0,root.val);
+                
+                sol.add(currsol);
+                currsol = new LinkedList();
+                
+                if (bfs.size()>0) {
+                    bfs.addLast(null);
+                }
+                
+                is_order_left = !is_order_left;
+                
             }
+            
+            
         }
+            return sol;
 
-        helper(root.left,level+1,!leftToRight);
-        helper(root.right,level+1,!leftToRight);
-
+        
+        
     }
 }
