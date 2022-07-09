@@ -18,7 +18,7 @@ class Solution {
     List<List<Integer>> sol = new ArrayList<>();
     
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
-        helper(root, 0, false);
+        helper(root, 0, true);
         return sol;
     }
     
@@ -31,7 +31,7 @@ class Solution {
             sol.add(new ArrayList());
             sol.get(level).add(root.val);
         } else {
-            if (!leftToRight) {
+            if (leftToRight) {
                 sol.get(level).add(root.val);
             } else {
                 sol.get(level).add(0,root.val);
