@@ -1,25 +1,28 @@
 class Solution {
-public int shortestWay(String source, String target) {
-	char[] cs = source.toCharArray(), ts = target.toCharArray();
-	int[][] idx = new int[cs.length][26];
-	idx[cs.length - 1][cs[cs.length - 1] - 'a'] = cs.length; 
-	for (int i = cs.length - 2; i >= 0; i--) {
-		idx[i] = Arrays.copyOf(idx[i + 1],26);
-		idx[i][cs[i] - 'a'] = i + 1; 
-	}
-	int j = 0, res = 1;
-	for (int i = 0; i < ts.length; i++) {
-		if (j == cs.length) {
-			j = 0;
-			res++;
-		}
-		j = idx[j][ts[i] - 'a'];
-		if (idx[0][ts[i] - 'a'] == 0) return -1;
-		if (j == 0) {
-			res++;
-			i--;
-		}
-	}
-	return res;
-}
+    public int shortestWay(String source, String target) {
+        
+        int count = 0;
+        
+        for (char ch : target.toCharArray()) {
+            if (!source.contains(ch+"")) {
+                return -1;
+            }            
+        }
+        
+        for (int i=0; i<target.length();) {
+                        
+            for (int j = 0 ; j < source.length() && i <target.length(); j++) {
+                char tch = target.charAt(i);
+                char sch = source.charAt(j);
+                // System.out.println(tch + " " + sch);
+                if (tch == sch) {
+                    i++;
+                }                
+            }
+            
+            count ++;           
+        }
+        
+        return count;
+    }
 }
