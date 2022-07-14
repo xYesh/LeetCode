@@ -1,16 +1,22 @@
 class Solution {
     public int numOfMinutes(int n, int headID, int[] manager, int[] informTime) {
-        int res = 0;
-        for (int i = 0; i < n; ++i)
-            res = Math.max(res, dfs(i, manager, informTime));
-        return res;
+        
+        int sol = 0;
+        
+        for (int i=0; i<manager.length;i++) {
+            sol = Math.max(sol,dfs(i,manager,informTime));
+        }
+        
+        return sol;
     }
     
-    public int dfs(int i, int[] manager, int[] informTime) {
-        if (manager[i] != -1) {
-            informTime[i] += dfs(manager[i], manager, informTime);
-            manager[i] = -1;
+    private int dfs(int i, int[] m, int[] inf) {
+        
+        if (m[i] != -1) {
+            inf[i] = inf[i] + dfs(m[i],m,inf);
         }
-        return informTime[i];
+        m[i] = -1;
+        return inf[i];
+        
     }
 }
