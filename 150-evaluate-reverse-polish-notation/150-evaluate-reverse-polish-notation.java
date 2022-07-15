@@ -1,45 +1,35 @@
 class Solution {
+    
+    private static final Map<String, BiFunction<Integer, Integer, Integer>> OPERATIONS = new HashMap<>();
+    
+    // Ensure this only gets done once for ALL test cases.
+    static {
+        OPERATIONS.put("+", (a, b) -> a + b);
+        OPERATIONS.put("-", (a, b) -> a - b);
+        OPERATIONS.put("*", (a, b) -> a * b);
+        OPERATIONS.put("/", (a, b) -> a / b);
+    }
+    
     public int evalRPN(String[] tokens) {
-        
-        Stack<Integer> nums = new Stack();
-        
+
+        Stack<Integer> stack = new Stack<>();
+
         for (String token : tokens) {
             
-            if (!isOperator(token)) {
-                nums.push(Integer.parseInt(token));
+            if (!OPERATIONS.containsKey(token)) {
+                stack.push(Integer.valueOf(token));
                 continue;
             }
             
-            int second = nums.pop(); 
-            int first = nums.pop();
-            int sum = 0;
-
-            switch(token) {
-                case "+" : 
-                    sum = sum + first + second;break;
-                case "-" :
-                    sum = first - second; break;
-                case "*" : 
-                    sum = first * second; break;
-                case "/":
-                    sum = first/second;break;
-            }
-            
-            nums.push(sum);
-            
+            int number2 = stack.pop();
+            int number1 = stack.pop();
+            BiFunction<Integer, Integer, Integer> operation;
+            operation = OPERATIONS.get(token);
+            int result = operation.apply(number1, number2);
+            stack.push(result);
         }
         
-        return nums.pop();
+        return stack.pop();
         
-        
-    }
-    
-    private boolean isOperator(String s) {
-        
-        if (s.equals("*") || s.equals("/") || s.equals("+") || s.equals("-")) {
-            return true;
-        }
-        
-        return false;
     }
 }
