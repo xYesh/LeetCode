@@ -1,17 +1,18 @@
 class Solution {
-    public static boolean checkIfExist(int[] arr) {
-
-        for (int i=0; i<arr.length;i++) {
-            for (int j=1;j<arr.length;j++) {
-                if (i == j) {
-                    continue;
-                } else {
-                    if (arr[j] * 2 == arr[i] || arr[i] * 2 == arr[j]) {
-                        return true;
-                    }
-                }
+    public boolean checkIfExist(int[] arr) {
+        ArrayList<Integer> comp = new ArrayList();
+        
+        for (int num : arr) {
+            
+            if (comp.contains(num * 2) || (num % 2 == 0 && comp.contains(num/2))) {
+                return true;
             }
+            
+            comp.add(num);
         }
+        
         return false;
+        
+        
     }
 }
