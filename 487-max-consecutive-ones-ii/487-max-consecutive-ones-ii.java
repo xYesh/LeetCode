@@ -6,6 +6,7 @@ class Solution {
         boolean converted = false;
         int sol = 0;
         
+        //keep a pointer to the last zero so we don't need to iterate again
         int lastzero = 0;
         
         while (right < nums.length) {
