@@ -37,8 +37,8 @@ class Solution {
         if (left == right) return;
         
         // select a random pivot_index
-        // Random random_num = new Random();
-        int pivot_index = k_smallest; 
+        Random random_num = new Random();
+        int pivot_index = left + random_num.nextInt(right - left); 
 
         // find the pivot position in a sorted list
         pivot_index = partition(left, right, pivot_index);
