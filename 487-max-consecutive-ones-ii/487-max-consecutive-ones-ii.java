@@ -3,30 +3,25 @@ class Solution {
         
         int left = 0;
         int right = 0;
-        boolean converted = false;
-        int sol = 0;
-        
-        //keep a pointer to the last zero so we don't need to iterate again
-        int lastzero = 0;
-        
+        int ans = 0;
+        boolean flipped = false;
+        int lastZero = 0;
         while (right < nums.length) {
-            if (nums[right] == 1) {
-                sol = Math.max(sol, right - left + 1);
-            } else {
-                if (converted) {
-                    left = lastzero + 1;
-                    lastzero = right;
-                    right ++;
-                    continue;
-                }
-                
-                lastzero = right;
-                converted = true;
-                sol = Math.max(sol, right - left + 1);
+            
+            if (nums[right] == 0) {   
+                 if (flipped) {
+                    left = lastZero;
+                    lastZero = right + 1;
+                 } else {
+                    flipped = true;
+                    lastZero = right + 1;
+                 }
             }
+            ans = Math.max(ans, right - left + 1);  
             right ++;
         }
-        
-        return sol;
+        return ans;
+
     }
+    
 }
