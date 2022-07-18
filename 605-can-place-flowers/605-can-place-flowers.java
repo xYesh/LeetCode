@@ -10,7 +10,7 @@ public class Solution {
                 
                 // If both plots are empty, we can plant a flower here.
                 if (emptyLeftPlot && emptyRightPlot) {
-                    flowerbed[i] = 1;
+                    flowerbed[i++] = 1;
                     count++;
                     if (count >= n) {
                         return true;
