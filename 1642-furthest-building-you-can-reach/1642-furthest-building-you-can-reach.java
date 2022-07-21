@@ -22,7 +22,7 @@ class Solution {
                 return i;
             }
             
-            System.out.println(bricks + " " + ladders);
+            // System.out.println(bricks + " " + ladders);
         }
         
         return heights.length-1;
