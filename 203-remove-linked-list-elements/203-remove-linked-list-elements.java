@@ -15,17 +15,14 @@ class Solution {
         ListNode prev = fake;
         
         while (head != null) {
-            
-            while (head != null && head.val == val) {
+           
+            if (head.val == val) {
                 prev.next = head.next;
-                head = head.next;
+            } else {
+                prev = head;
             }
             
-            
-            if (head != null) {
-                head = head.next;
-                prev = prev.next;
-            }
+            head = head.next;
         }
         
         return fake.next;
