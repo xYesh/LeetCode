@@ -3,6 +3,7 @@ class MovingAverage {
     
     int count = 0;
     int size = 0;
+    int sum = 0;
     int[] arr;
     public MovingAverage(int size) {
         arr = new int[size];
@@ -12,14 +13,18 @@ class MovingAverage {
     
     public double next(int val) {
         int pos = count % size;
-        arr[pos] = val;        
         count++;
-        double sum = 0;
         int limit = count < size ? count : size;
-        for (int i=0; i<limit; i++) {
-            sum = sum + arr[i];
+        
+        
+        if (count > size) {
+            sum = sum - arr[pos] + val;
+        } else {
+            sum = sum + val;
         }
                
+        arr[pos] = val;        
+
         return (double) sum/limit;
         
     }
