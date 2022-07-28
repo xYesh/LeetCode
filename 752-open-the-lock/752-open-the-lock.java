@@ -1,32 +1,30 @@
 class Solution {
     public int openLock(String[] deadends, String target) {
-        Set<String> begin = new HashSet<>();
-        Set<String> end = new HashSet<>();
-        Set<String> deads = new HashSet<>(Arrays.asList(deadends));
-        begin.add("0000");
-        end.add(target);
-        int level = 0;
-        while(!begin.isEmpty() && !end.isEmpty()) {
-            Set<String> temp = new HashSet<>();
-            for(String s : begin) {
-                if(end.contains(s)) return level;
-                if(deads.contains(s)) continue;
-                deads.add(s);
-                StringBuilder sb = new StringBuilder(s);
-                for(int i = 0; i < 4; i ++) {
-                    char c = sb.charAt(i);
-                    String s1 = sb.substring(0, i) + (c == '9' ? 0 : c - '0' + 1) + sb.substring(i + 1);
-                    String s2 = sb.substring(0, i) + (c == '0' ? 9 : c - '0' - 1) + sb.substring(i + 1);
-                    if(!deads.contains(s1))
-                        temp.add(s1);
-                    if(!deads.contains(s2))
-                        temp.add(s2);
+        Set<String> deadSet = new HashSet<>(Arrays.asList(deadends));
+        if (deadSet.contains("0000")) return -1;
+        Queue<String> q = new LinkedList<>(Collections.singletonList("0000"));
+        for (int steps = 0; !q.isEmpty(); ++steps) {
+            for (int i = q.size(); i > 0; --i) {
+                String curr = q.poll();
+                if (curr.equals(target)) return steps;
+                for (String nei : neighbors(curr)) {
+                    if (deadSet.contains(nei)) continue;
+                    deadSet.add(nei); // Marked as visited
+                    q.offer(nei);
                 }
             }
-            level ++;
-            begin = end;
-            end = temp;
         }
         return -1;
+    }
+    List<String> neighbors(String code) {
+        List<String> result = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            int x = code.charAt(i) - '0';
+            for (int diff = -1; diff <= 1; diff += 2) {
+                int y = (x + diff + 10) % 10;
+                result.add(code.substring(0, i) + ("" + y) + code.substring(i + 1));
+            }
+        }
+        return result;
     }
 }
