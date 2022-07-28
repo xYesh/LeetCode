@@ -1,60 +1,32 @@
 class Solution {
     public int openLock(String[] deadends, String target) {
-        
-        LinkedList<String> q = new LinkedList<>();
-        
-        Set<String> visited = new HashSet<>();
-        
-        Set<String> deadend = new HashSet<>();
-        
-        int[] directions = new int[] {-1, 1};
-        
-        for (String de : deadends) {
-            deadend.add(de);
-        }
-        
-        if (deadend.contains(target) || deadend.contains("0000")) {
-            return -1;
-        }
-        
-        q.add("0000");
-        q.add(null);
-        int sol = 0;
-        while (!q.isEmpty()) {
-            String curr = q.poll();
-            // System.out.println(curr);
-
-            if (curr == null) {
-                sol ++;
-                if (q.peek() != null) {
-                    q.offer(null);
-                }
-            } else {
-                if (curr.equals(target)) {
-                    return sol;
-                }
-                
-                if (deadend.contains(curr)) {
-                    continue;
-                }
-                
-                for (int i=0; i<4; i++) {
-                                        
-                    for (int direction : directions) {
-                        
-                        int newnum = ((curr.charAt(i) - '0') + direction + 10) % 10;
-                        
-                        String newlock = curr.substring(0,i) + newnum + curr.substring(i+1); 
-                        
-                        if (!visited.contains(newlock)) {
-                            visited.add(newlock);
-                            q.add(newlock);
-                        }
-                    }
+        Set<String> begin = new HashSet<>();
+        Set<String> end = new HashSet<>();
+        Set<String> deads = new HashSet<>(Arrays.asList(deadends));
+        begin.add("0000");
+        end.add(target);
+        int level = 0;
+        while(!begin.isEmpty() && !end.isEmpty()) {
+            Set<String> temp = new HashSet<>();
+            for(String s : begin) {
+                if(end.contains(s)) return level;
+                if(deads.contains(s)) continue;
+                deads.add(s);
+                StringBuilder sb = new StringBuilder(s);
+                for(int i = 0; i < 4; i ++) {
+                    char c = sb.charAt(i);
+                    String s1 = sb.substring(0, i) + (c == '9' ? 0 : c - '0' + 1) + sb.substring(i + 1);
+                    String s2 = sb.substring(0, i) + (c == '0' ? 9 : c - '0' - 1) + sb.substring(i + 1);
+                    if(!deads.contains(s1))
+                        temp.add(s1);
+                    if(!deads.contains(s2))
+                        temp.add(s2);
                 }
             }
+            level ++;
+            begin = end;
+            end = temp;
         }
-        return -1;            
-        
+        return -1;
     }
 }
