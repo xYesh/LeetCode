@@ -1,24 +1,29 @@
 class Solution {
     
-    HashMap<Integer,Integer> memo = new HashMap();
-    
     public int rob(int[] nums) {
-        memo = new HashMap();
-        return dp(nums,0);
-    }
-    
-    private int dp(int[] nums, int idx) {
         
-        if (idx >= nums.length) {
+        int N = nums.length;
+        
+        // Special handling for empty array case.
+        if (N == 0) {
             return 0;
         }
         
-        if (memo.containsKey(idx)) {
-            return memo.get(idx);
+        int[] maxRobbedAmount = new int[nums.length + 1];
+        
+        // Base case initializations.
+        maxRobbedAmount[N] = 0;
+        maxRobbedAmount[N - 1] = nums[N - 1];
+        
+        // DP table calculations.
+        for (int i = N - 2; i >= 0; --i) {
+            
+            // Same as the recursive solution.
+            maxRobbedAmount[i] = Math.max(maxRobbedAmount[i + 1], maxRobbedAmount[i + 2] + nums[i]);
         }
         
-        int sol = Math.max(nums[idx] + dp(nums,idx + 2), dp(nums,idx+1));
-        memo.put(idx,sol);
-        return sol;
+        System.out.println(Arrays.toString(maxRobbedAmount));
+        
+        return maxRobbedAmount[0];
     }
 }
