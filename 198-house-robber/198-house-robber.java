@@ -22,7 +22,6 @@ class Solution {
             maxRobbedAmount[i] = Math.max(maxRobbedAmount[i + 1], maxRobbedAmount[i + 2] + nums[i]);
         }
         
-        System.out.println(Arrays.toString(maxRobbedAmount));
         
         return maxRobbedAmount[0];
     }
