@@ -1,39 +1,53 @@
 class Solution {
+    private int n, d;
+    private int[][] memo;
+    private int[] jobDifficulty;
+    private int[] hardestJobRemaining;
     
-    HashMap<String,Integer> map = new HashMap();
+    private int dp(int i, int day) {
+        // Base case, it's the last day so we need to finish all the jobs
+        if (day == d) {
+            return hardestJobRemaining[i];
+        }
+        
+        if (memo[i][day] == -1) {
+            int best = Integer.MAX_VALUE;
+            int hardest = 0;
+            // Iterate through the options and choose the best
+            for (int j = i; j < n - (d - day); j++) {
+                hardest = Math.max(hardest, jobDifficulty[j]);
+                // Recurrence relation
+                best = Math.min(best, hardest + dp(j + 1, day + 1));
+            }
+            memo[i][day] = best;
+        }
+        
+        return memo[i][day];
+    }
+    
     public int minDifficulty(int[] jobDifficulty, int d) {
-         map = new HashMap();
-        if (jobDifficulty.length < d) {
+        n = jobDifficulty.length;
+        // If we cannot schedule at least one job per day, 
+        // it is impossible to create a schedule
+        if (n < d) {
             return -1;
         }
         
-        return helper(jobDifficulty,d,0,1);
-        
-    }
-    
-    private int helper(int[] jobs, int d, int job, int day) {
-        if(day == d) {
-            int diff = -1;
-            for (int i=job; i<jobs.length; i++) {
-                diff = Math.max(diff,jobs[i]);
-            }
-            return diff;
+        hardestJobRemaining = new int[n];
+        int hardestJob = 0;
+        for (int i = n - 1; i >= 0; i--) {
+            hardestJob = Math.max(hardestJob, jobDifficulty[i]);
+            hardestJobRemaining[i] = hardestJob;
         }
         
-        if (map.containsKey(job + " " + day)) {
-            return map.get(job + " " + day);
+        // Initialize memo array with value of -1.
+        memo = new int[n][d + 1];
+        for (int i = 0; i < n; i++) {
+            Arrays.fill(memo[i], -1);
         }
         
-        int best = Integer.MAX_VALUE;
-        int hardest = 0;
-        
-        for (int i=job; i < (jobs.length - (d-day)); i++ ) {
-            hardest = Math.max(hardest, jobs[i]);
-            best = Math.min(best, hardest + helper(jobs,d,i+1,day+1));
-        }
-        
-        map.put(job + " " + day , best);
-        
-        return best;
+        this.d = d;
+        this.jobDifficulty = jobDifficulty;
+        return dp(0, 1);
     }
 }
