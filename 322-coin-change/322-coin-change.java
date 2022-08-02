@@ -1,24 +1,35 @@
 class Solution {
+    
+    HashMap<Integer,Integer> map = new HashMap();
+    
     public int coinChange(int[] coins, int amount) {
-        
-        int max = amount + 1;
-        int[] dp = new int[amount+1];
-        
-        Arrays.fill(dp,max);
-        dp[0] = 0;
-        for (int i=1; i<=amount; i++) {
-            
-            for (int j=0; j<coins.length;j++) {
-                
-                if (coins[j] <= i) {
-                    dp[i] = Math.min(dp[i] , 1 + dp[i - coins[j]]);
-                }
-                
-            }
-            
+         map = new HashMap();
+        return helper(coins,amount);
+    }
+    
+    private int helper(int[] coins, int amount) {
+        if (amount == 0) {
+            return 0;
+        } if (amount < 0) {
+            return Integer.MAX_VALUE;
         }
         
-        return dp[max - 1] == max ? -1 : dp[max-1];
+        if (map.containsKey(amount)) {
+            return map.get(amount);
+        }
         
+        int min = Integer.MAX_VALUE;
+        for (int coin : coins) {
+            int temp = helper(coins,amount-coin) + 1;
+            if (temp > 0) {
+                min = Math.min(min,temp);
+            }
+        }
+        
+        min = min == Integer.MAX_VALUE ? -1 : min;
+        
+        map.put(amount,min);
+        
+        return min;
     }
 }
