@@ -1,0 +1,82 @@
+// brute force approach is the initial solution that comes to mind. This apprach fails as it is very slow.
+// time complexity is o(n^2)
+// space complexity is o(1); the solution array shouldn't count right ?
+class Solution {
+    public int[] productExceptSelf(int[] nums) {
+        // brute force approach
+
+        int[] sol = new int[nums.length];
+        for (int i=0; i<nums.length; i++) {
+            int temp = 1;
+            for (int j=0;j<nums.length;j++) {
+                if (i == j) {
+                    continue;
+                }
+
+                temp = temp * nums[j];
+            }
+            sol[i] = temp;
+        }
+        return sol;
+    }
+}
+
+// https://www.youtube.com/watch?v=bNvIQI2wAjk
+// think of prefix and postfix arrays. once we compute those 2 arrays, we can form the solution array. 
+// time complexity is o(n)
+// space complexity is also o(n)
+class Solution {
+    public int[] productExceptSelf(int[] nums) {
+        int[] pre = new int[nums.length];
+        int[] post = new int[nums.length];
+        int[] sol = new int[nums.length];
+
+        int tmp = 1;
+        for (int i=0; i<nums.length;i++) {
+            pre[i] = tmp * nums[i];
+            tmp = pre[i];
+        }
+        tmp = 1;
+        for (int i=nums.length - 1; i>=0;i--) {
+            post[i] = tmp * nums[i];
+            tmp = post[i];
+        }
+
+        for (int i=0; i<nums.length;i++) {
+            if (i==0) {
+                sol[i] = post[i+1];
+                continue;
+            } else if (i == nums.length -1) {
+                sol[i] = pre[i-1];
+            } else {
+                sol[i] = pre[i-1] * post[i+1];
+            }
+        }
+        return sol;
+    } 
+}
+
+// we know that the sol array is not counted towards the space complexity. we can achieve this with o(1) space by storing the prefix in the sol array and doing the post fix and sol in one shot.
+// space complexity is o(1)
+
+class Solution {
+    public int[] productExceptSelf(int[] nums) {
+        int[] sol = new int[nums.length];
+        int tmp = 1;
+        for (int i=0; i<nums.length;i++) {
+            sol[i] = tmp * nums[i];
+            tmp = sol[i];
+        }
+        
+        tmp = 1;
+        for (int i=nums.length-1; i>= 0;i--) {
+            if (i == 0) {
+                sol[i] = tmp;
+                continue;
+            }
+            sol[i] = tmp * sol[i-1];
+            tmp = tmp * nums[i];
+        }
+        return sol;
+    } 
+}
